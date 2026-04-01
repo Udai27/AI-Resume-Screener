@@ -1,6 +1,3 @@
-# =========================
-# 1. IMPORTS
-# =========================
 import streamlit as st
 import pandas as pd
 import math
@@ -15,9 +12,6 @@ from similarity import calculate_tfidf_similarity
 from hybrid_score import calculate_hybrid_score
 from job_api import fetch_job_description
 
-# =========================
-# 2. AUTH FUNCTIONS
-# =========================
 def authenticate(username, password):
     try:
         df = pd.read_csv("login_data.csv")
@@ -40,9 +34,6 @@ def register_user(username, password):
     df.to_csv("login_data.csv", index=False)
     return True
 
-# =========================
-# 3. LOGIN + SIGNUP UI
-# =========================
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
@@ -143,9 +134,6 @@ if not st.session_state.logged_in:
     st.markdown('</div>', unsafe_allow_html=True)
     st.stop()
 
-# =========================
-# 4. PAGE CONFIG
-# =========================
 st.set_page_config(page_title="SmartHire AI", page_icon="🚀", layout="wide")
 
 # =========================
@@ -160,9 +148,6 @@ if st.sidebar.button("Logout"):
     st.session_state.logged_in = False
     st.rerun()
 
-# =========================
-# INPUT
-# =========================
 col1, col2 = st.columns(2)
 
 with col1:
@@ -181,9 +166,6 @@ with col2:
 
 check_button = st.button("🚀 Analyze")
 
-# =========================
-# LOGIC
-# =========================
 if check_button:
 
     resume_texts = []
@@ -253,9 +235,6 @@ if check_button:
 
     df = pd.DataFrame(results).sort_values(by="Score", ascending=False)
 
-    # =========================
-    # RESULTS
-    # =========================
     st.subheader("🏆 Top Candidates")
 
     for _, row in df.head(top_n).iterrows():
@@ -269,9 +248,6 @@ if check_button:
     st.subheader("📊 Full Ranking")
     st.dataframe(df, use_container_width=True)
 
-    # =========================
-    # GRAPHS
-    # =========================
     st.subheader("📊 Visual Insights")
 
     top_df = df.head(top_n)
@@ -280,9 +256,6 @@ if check_button:
     st.plotly_chart(px.pie(top_df, names="Candidate", values="Score", title="Score Distribution"), use_container_width=True)
     st.plotly_chart(px.histogram(df, x="Score", nbins=10, title="Score Spread"), use_container_width=True)
 
-    # =========================
-    # METRICS
-    # =========================
     col1, col2, col3 = st.columns(3)
     col1.metric("Total", len(df))
     col2.metric("Top Score", f"{df.iloc[0]['Score']}%")

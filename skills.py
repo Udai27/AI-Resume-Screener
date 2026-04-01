@@ -1,5 +1,3 @@
-# skills.py
-
 SKILLS = [
     "python", "java", "c++", "machine learning", "deep learning",
     "data science", "tensorflow", "keras", "pandas", "numpy",
